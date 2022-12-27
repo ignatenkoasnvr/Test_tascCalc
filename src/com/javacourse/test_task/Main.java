@@ -14,6 +14,11 @@ public class Main
     public static boolean arabic = true;
 
     public static String calc(String input) {
+        if (!input.contains(" ")) {
+            System.out.println("throws Exception // т.к. строка не является математической операцией");
+            System.exit (1);
+        }
+
         String[] strings = input.split(" ");
         String str1= null, str2= null, str3 = null;
         try {
