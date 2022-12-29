@@ -1,6 +1,5 @@
-package com.javacourse.test_task;
+//package com.javacourse.test_task;
 import java.util.Scanner;
-
 public class Main
 {
     public static void main(String[] args) {
@@ -10,292 +9,137 @@ public class Main
 
         System.out.println(calc(tempString));
     }
-
     public static boolean arabic = true;
-
+    public static int firstNumber = 0;
+    public static int secondNumber = 0;
     public static String calc(String input) {
         if (!input.contains(" ")) {
             System.out.println("throws Exception // т.к. строка не является математической операцией");
             System.exit (1);
         }
-
+        
         String[] strings = input.split(" ");
-        String str1= null, str2= null, str3 = null;
-        try {
-            str1 = strings[0];
-            str2 = strings[1];
-            str3 = strings[2];
-        }catch (Exception e){
-            System.out.println("throws Exception // т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
-        }
-
-
-        int [] mas = {0 , 0 };
-        mas = number(str1, str3);
-        //int b = number( arabic);
-        int result = 0;
-        String res = null;
-
-        if (str2.equals("+"))
-            result = mas[0] + mas[1];
-        else if (str2.equals("-"))
-            result = mas[0] - mas[1];
-        else if (str2.equals("*"))
-            result = mas[0] * mas[1];
-        else if (str2.equals("/"))
-            result = mas[0] / mas[1];
-
-        else {
-            System.out.println("throws Exception // т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+        if(strings.length < 2) {
+            System.out.println("throws Exception // т.к. строка не является математической операцией");
             System.exit (1);
         }
-        if (result <=0 && !arabic){
+        
+        if(strings.length > 3) {
+            System.out.println("throws Exception // т.к. формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+            System.exit (1);
+        }        
+        
+        String str1 = strings[0];
+        String str2 = strings[1];
+        String str3 = strings[2];
+
+        try {
+            firstNumber =  Integer.parseInt(str1);
+            if ( firstNumber < 1 || firstNumber > 10){
+                System.out.println("throws Exception  // т.к. калькулятор может принимать на вход числа от 1 до 10 включительно");
+                System.exit (1);       
+            } 
+        }
+        catch (NumberFormatException a) {
+            firstNumber = toNumber(str1); 
+            arabic = false;
+        }
+        try {
+            secondNumber =  Integer.parseInt(str3);
+            if (!arabic){
+                System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
+                System.exit (1);
+            }
+            if (secondNumber < 1 || secondNumber > 10){
+                System.out.println("throws Exception  // т.к. калькулятор может принимать на вход числа от 1 до 10 включительно ");
+                System.exit (1);       
+            }
+        }
+        catch (NumberFormatException a) {
+            secondNumber = toNumber(str3); 
+            if (arabic){
+                System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
+                System.exit (1);
+            }
+        }       
+        
+        int resInt = 0;
+        String resStr = null;
+
+        if (str2.equals("+"))
+            resInt = firstNumber + secondNumber;
+        else if (str2.equals("-"))
+            resInt = firstNumber - secondNumber;
+        else if (str2.equals("*"))
+            resInt = firstNumber * secondNumber;
+        else if (str2.equals("/"))
+            resInt = firstNumber / secondNumber;
+        else {
+            System.out.println("throws Exception // т.к. строка не является математической операцией");
+            System.exit (1);
+        }
+        if (resInt <=0 && !arabic){
             System.out.println("throws Exception //т.к. в римской системе нет отрицательных чисел");
             System.exit (1);
         }
 
         if (!arabic){
-            res = toRomul(result);
+            resStr = toRomul(resInt);
         }
         else {
-            res = String.valueOf(result);
+            resStr = String.valueOf(resInt);
         }
-        return res;
+        return resStr;
     }
-    public static int[] number(String str1, String str3) {
-        int[] mas = {0, 0};
-        switch (str1) {
-            case "0":
-                mas[0] = 0;
-                break;
-            case "1":
-                mas[0] = 1;
-                break;
-            case "2":
-                mas[0] = 2;
-                break;
-            case "3":
-                mas[0] = 3;
-                break;
-            case "4":
-                mas[0] = 4;
-                break;
-            case "5":
-                mas[0] = 5;
-                break;
-            case "6":
-                mas[0] = 6;
-                break;
-            case "7":
-                mas[0] = 7;
-                break;
-            case "8":
-                mas[0] = 8;
-                break;
-            case "9":
-                mas[0] = 9;
-                break;
-            case "10":
-                mas[0] = 10;
-                break;
+    public static int toNumber(String str) {
+        int temp = 0;
+        switch (str) {
             case "I":
-                mas[0] = 1;
-                arabic = false;
+                temp = 1;
                 break;
             case "II":
-                mas[0] = 2;
-                arabic = false;
+                temp = 2;
                 break;
             case "III":
-                mas[0] = 3;
+                temp = 3;
                 arabic = false;
                 break;
             case "IV":
-                mas[0] = 4;
+                temp = 4;
                 arabic = false;
                 break;
             case "V":
-                mas[0] = 5;
+                temp = 5;
                 arabic = false;
                 break;
             case "VI":
-                mas[0] = 6;
+                temp = 6;
                 arabic = false;
                 break;
             case "VII":
-                mas[0] = 7;
+                temp = 7;
                 arabic = false;
                 break;
             case "VIII":
-                mas[0] = 8;
+                temp = 8;
                 arabic = false;
                 break;
             case "IX":
-                mas[0] = 9;
+                temp = 9;
                 arabic = false;
                 break;
             case "X":
-                mas[0] = 10;
+                temp = 10;
                 arabic = false;
                 break;
-
+            default:
+                System.out.println("throws Exception //т.к. калькулятор может принимать на вход числа от 1 до 10 включительно");
+                System.exit (1);
         }
-        switch (str3) {
-            case "0":
-                mas[1] = 0;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "1":
-                mas[1] = 1;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "2":
-                mas[1] = 2;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "3":
-                mas[1] = 3;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "4":
-                mas[1] = 4;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "5":
-                mas[1] = 5;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "6":
-                mas[1] = 6;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "7":
-                mas[1] = 7;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "8":
-                mas[1] = 8;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "9":
-                mas[1] = 9;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "10":
-                mas[1] = 10;
-                if (!arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "I":
-                mas[1] = 1;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "II":
-                mas[1] = 2;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "III":
-                mas[1] = 3;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "IV":
-                mas[1] = 4;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "V":
-                mas[1] = 5;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "VI":
-                mas[1] = 6;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "VII":
-                mas[1] = 7;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "VIII":
-                mas[1] = 8;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "IX":
-                mas[1] = 9;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-            case "X":
-                mas[1] = 10;
-                if (arabic) {
-                    System.out.println("throws Exception //т.к. используются одновременно разные системы счисления");
-                    System.exit (1);
-                }
-                break;
-
-            default: // catch trow
-        }
-
-        return mas;
+        return temp;
     }
     public static String toRomul(int res){
-        String tempStr = null;
+        String tempStr = "";
         int tempArray[] = {res/10, res % 10};
         switch (tempArray[0]) {
             case 1:
